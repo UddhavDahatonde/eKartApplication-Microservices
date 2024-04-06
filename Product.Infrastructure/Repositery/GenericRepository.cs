@@ -40,10 +40,11 @@ namespace Product.Infrastructure.Repositery
             }
             return await query.ToListAsync(); // Assuming you're using Entity Framework Core
         }
-        public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string include = null)
         {
-            var query = GetQueryable(filter);
-            return query.FirstOrDefault();
+            // Assuming you want to include related entities based on the string "category"
+            var query = GetQueryable(filter,include);
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<T> UpdateAsync(T entity)
@@ -57,28 +58,47 @@ namespace Product.Infrastructure.Repositery
             return _Context.SaveChangesAsync();
         }
 
+        //private IQueryable<T> GetQueryable(
+        //    Expression<Func<T, bool>>? filter = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+        //{
+        //    IQueryable<T> query = _Context.Set<T>();
+
+        //    if (include is not null)
+        //    {
+        //        query = include(query);
+        //    }
+
+        //    if (filter is not null)
+        //    {
+        //        query = query.Where(filter);
+        //    }
+
+        //    return query;
+        //}
         private IQueryable<T> GetQueryable(
-            Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+     Expression<Func<T, bool>>? filter = null,
+     string include = null)
         {
             IQueryable<T> query = _Context.Set<T>();
 
-            if (include is not null)
+            if (!string.IsNullOrEmpty(include))
             {
-                query = include(query);
+                query = query.Include(include);
             }
 
-            if (filter is not null)
+            if (filter != null)
             {
                 query = query.Where(filter);
             }
 
             return query;
         }
-
-        public Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter)
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter,string include = null)
         {
-            return _Context.Set<T>().FirstOrDefaultAsync(filter);
+
+            T entity = GetSingle(filter, include);
+            return entity;
         }
 
         public async Task<T> DeleteAsync(Expression<Func<T, bool>> filter)
@@ -88,8 +108,12 @@ namespace Product.Infrastructure.Repositery
             return entity;
         }
 
-        private T GetSingle(Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+        //private T GetSingle(Expression<Func<T, bool>>? filter = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+        //{
+        //    return GetQueryable(filter, include).FirstOrDefault();
+        //}
+        private T GetSingle(Expression<Func<T, bool>>? filter = null,string include = null)
         {
             return GetQueryable(filter, include).FirstOrDefault();
         }

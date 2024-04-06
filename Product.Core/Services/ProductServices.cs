@@ -2,15 +2,9 @@
 using Product.Core.Domain.Entities;
 using Product.Core.Domain.RepositeryContract;
 using Product.Core.Dto;
+using Product.Core.Helper;
 using Product.Core.ServicesContract;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Product.Core.Services
 {
@@ -33,150 +27,284 @@ namespace Product.Core.Services
         /// <inheritdoc/>
         public async Task<ProductDto> AddProductAsync(ProductDto? productDto)
         {
-            var product = new Products()
+            if (productDto == null)
             {
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Discount = productDto.Discount,
-                CategoryId = productDto.CategoryId,
-                Category = new Category()
+                throw new ArgumentNullException(nameof(productDto));
+            }
+
+            ValidationHelper.ModelValiation(productDto);
+
+            try
+            {
+                // Map ProductDto to Products entity
+                var product = new Products()
                 {
-                    CategoryId = productDto.Category.CategoryId,
-                    Name = productDto.Category.Name
-                },
-                ImageUrl = productDto.ImageUrl,
-                Price = productDto.Price,
-                QuantityAvailable = productDto.QuantityAvailable,
-            };
-            await _productRepository.AddAsync(product);
-            var result = await _productRepository.CompleteAsync();
-            _logger.LogInformation($"[AddProductAsyns] - {productDto.Name} added successfully");
-            if (result != 0)
-                return productDto;
-            else
-                return new ProductDto();
+                    Name = productDto.Name,
+                    Description = productDto.Description,
+                    Discount = productDto.Discount,
+                    CategoryId = productDto.CategoryId,
+                    ImageUrl = productDto.ImageUrl,
+                    Price = productDto.Price,
+                    QuantityAvailable = productDto.QuantityAvailable,
+                };
+
+                if (productDto.Category != null && productDto.Category.CategoryId!=0&&productDto.Category.Name!="")
+                {
+                    product.Category = new Category()
+                    {
+                        CategoryId = productDto.Category.CategoryId,
+                        Name = productDto.Category.Name
+                    };
+                }
+
+                await _productRepository.AddAsync(product);
+                var result = await _productRepository.CompleteAsync();
+
+                if (result != 0)
+                {
+                    return productDto;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[AddProductAsync] - {ex.Message}");
+            }
+
+            return new ProductDto();
         }
+
 
         /// <inheritdoc/>
         public async Task<ProductDto> UpdateProductAsync(ProductDto? productDto)
         {
-            var product = new Products()
+            if (productDto == null)
             {
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Discount = productDto.Discount,
-                CategoryId = productDto.CategoryId,
-                Category = new Category()
+                throw new ArgumentNullException(nameof(productDto));
+            }
+
+            ValidationHelper.ModelValiation(productDto);
+
+            try
+            {
+                // Map ProductDto to Products entity
+                var product = new Products()
                 {
-                    CategoryId = productDto.Category.CategoryId,
-                    Name = productDto.Category.Name
-                },
-                ImageUrl = productDto.ImageUrl,
-                Price = productDto.Price,
-                QuantityAvailable = productDto.QuantityAvailable,
-            };
-            await _productRepository.UpdateAsync(product);
-            var result = await _productRepository.CompleteAsync();
-            _logger.LogInformation($"[UpdateProductAsyns] - Product updated successfully for the {productDto.Name}");
-            if (result != 0)
-                return productDto;
-            else
-                return new ProductDto();
+                    ProductId = productDto.ProductId,
+                    Name = productDto.Name,
+                    Description = productDto.Description,
+                    Discount = productDto.Discount,
+                    CategoryId = productDto.CategoryId,
+                    ImageUrl = productDto.ImageUrl,
+                    Price = productDto.Price,
+                    QuantityAvailable = productDto.QuantityAvailable,
+                };
+
+                if (productDto.Category != null && productDto.Category.CategoryId != 0 && productDto.Category.Name != "")
+                {
+                    product.Category = new Category()
+                    {
+                        CategoryId = productDto.Category.CategoryId,
+                        Name = productDto.Category.Name
+                    };
+                }
+
+                await _productRepository.UpdateAsync(product);
+                var result = await _productRepository.CompleteAsync();
+
+                if (result != 0)
+                {
+                    return productDto;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[UpdateProductAsync] - {ex.Message}");
+            }
+
+            return new ProductDto();
         }
+
 
         /// <inheritdoc/>
         public async Task<ProductDto?> GetProductByIdAsync(int? id)
         {
-            var product = await _productRepository.
-            FirstOrDefaultAsync(x => x.ProductId == id);
-            if (product == null)
+            if (id == null)
             {
-                return new ProductDto();
+                throw new ArgumentNullException(nameof(id));
             }
-            _logger.LogInformation($"[GetProductByIdAsync] - Called successfully");
-            return new ProductDto()
+
+            try
             {
-                Name = product.Name,
-                ProductId = product.ProductId,
-                Description = product.Description,
-                CategoryId = product.CategoryId,
-                Discount = product.Discount,
-                ImageUrl = product.ImageUrl,
-                Price = product.Price,
-                Category = new CategoryDto()
+                var product = await _productRepository.GetAsync(x => x.ProductId == id, "Category");
+
+                if (product == null)
                 {
-                    CategoryId = product.Category.CategoryId,
-                    Name = product.Category.Name
-                },
-                QuantityAvailable = product.QuantityAvailable,
-                PriceAfterDiscount = product.Price - (product.Price * product.Discount)
-            };
-            
+                    return null;
+                }
+
+                var productDto = new ProductDto()
+                {
+                    Name = product.Name,
+                    ProductId = product.ProductId,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    Discount = product.Discount,
+                    ImageUrl = product.ImageUrl,
+                    QuantityAvailable = product.QuantityAvailable,
+                    Price = product.Price,
+                    PriceAfterDiscount = product.Price - (product.Price * product.Discount)
+                };
+
+                if (product.Category != null)
+                {
+                    productDto.Category = new CategoryDto()
+                    {
+                        CategoryId = product.Category.CategoryId ?? null,
+                        Name = product.Category.Name ?? null
+                    };
+                }
+
+                return productDto;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[GetProductByIdAsync] - {ex.Message}");
+                return null;
+            }
         }
+
 
         /// <inheritdoc/>
         public async Task<IEnumerable<ProductDto>> GetAllProductAsync()
         {
-            var responseProduct=await _productRepository.GetAll("Category");
-            _logger.LogInformation($"[GetProductByIdAsync] - Called successfully");
-            List<ProductDto> productList = new List<ProductDto>();
-            if (responseProduct != null)
+            try
             {
-                foreach (var product in responseProduct)
+                var responseProduct = await _productRepository.GetAll("Category");
+
+                List<ProductDto> productList = new List<ProductDto>();
+
+                if (responseProduct != null)
                 {
-                    productList.Add(new ProductDto()
+                    foreach (var product in responseProduct)
                     {
-                        Name = product.Name,
-                        ProductId = product.ProductId,
-                        Description = product.Description,
-                        CategoryId = product.CategoryId,
-                        Discount = product.Discount,
-                        ImageUrl = product.ImageUrl,
-                        Price = product.Price,
-                        Category = new CategoryDto()
+                        var productDto = new ProductDto()
                         {
-                            CategoryId = product.Category.CategoryId,
-                            Name = product.Category.Name
-                        },
-                        QuantityAvailable = product.QuantityAvailable,
-                        PriceAfterDiscount = product.Price - (product.Price * product.Discount)
-                    });
+                            Name = product.Name,
+                            ProductId = product.ProductId,
+                            Description = product.Description,
+                            CategoryId = product.CategoryId,
+                            Discount = product.Discount,
+                            ImageUrl = product.ImageUrl,
+                            Price = product.Price,
+                            QuantityAvailable = product.QuantityAvailable,
+                            PriceAfterDiscount = product.Price - (product.Price * product.Discount)
+                        };
+
+                        if (product.Category != null)
+                        {
+                            productDto.Category = new CategoryDto()
+                            {
+                                CategoryId = product.Category.CategoryId,
+                                Name = product.Category.Name
+                            };
+                        }
+
+                        productList.Add(productDto);
+                    }
+
+                    return productList;
                 }
-                return productList;
             }
-            else { return new List<ProductDto>(); }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[GetAllProductAsync] - {ex.Message}");
+            }
+
+            return Enumerable.Empty<ProductDto>();
         }
+
 
         /// <inheritdoc/>
         public async Task<ProductDto> DeleteProductAsync(int? productId)
         {
-            var product = await _productRepository.DeleteAsync(x => x.ProductId == productId);
-            var response = await _productRepository.CompleteAsync();
-            _logger.LogInformation($"[DeleteProductAsyns] - Product deleted successfully for the {productId}");
-            if (response != 0)
+            if (productId == null)
             {
-                return new ProductDto()
-                {
-                    Name = product.Name,
-                    Category = new CategoryDto()
-                    {
-                        Name = product.Category.Name,
-                        CategoryId = product.Category.CategoryId
-                    },
-                    CategoryId = product.Category.CategoryId,
-                    Discount = product.Discount,
-                    ImageUrl = product.ImageUrl,
-                    Price = product.Price,
-                    Description = product.Description
-                };
+                throw new ArgumentNullException(nameof(productId));
             }
-            else
-                return new ProductDto();
+
+            try
+            {
+                var existingProduct = await _productRepository.FirstOrDefaultAsync(x => x.ProductId == productId);
+                if (existingProduct == null)
+                {
+                    throw new ArgumentException($"Product with ID {productId} not found.");
+                }
+
+                var deletedProduct = await _productRepository.DeleteAsync(x => x.ProductId == productId);
+                await _productRepository.CompleteAsync();
+
+                var productDto = new ProductDto()
+                {
+                    Name = deletedProduct.Name,
+                    Discount = deletedProduct.Discount,
+                    ImageUrl = deletedProduct.ImageUrl,
+                    Price = deletedProduct.Price,
+                    Description = deletedProduct.Description,
+                };
+
+                if (deletedProduct.Category != null)
+                {
+                    productDto.CategoryId = deletedProduct.Category.CategoryId;
+                    productDto.Category = new CategoryDto()
+                    {
+                        Name = deletedProduct.Category.Name,
+                        CategoryId = deletedProduct.Category.CategoryId,
+                    };
+                }
+
+                return productDto;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"[DeleteProductAsync] - {ex.Message}");
+                throw;
+            }
+        }
+        /// <summary>
+        /// Get All Product Base On user Specify Condition and return List of Product
+        /// </summary>
+        /// <param name="condition">condition on which user want to filter like name,price etc</param>
+        /// <param name="value">value user want to find out</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(string? condition, string? value)
+        {
+            if (string.IsNullOrEmpty(condition) || string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(nameof(condition), nameof(value));
+            }
+
+            try
+            {
+                var productsEnumerable = await GetAllProductAsync();
+                IQueryable<ProductDto> query = productsEnumerable.AsQueryable();
+                switch (condition.ToLower())
+                {
+                    case "name":
+                        query = query.Where(p => p.Name.ToLower().Contains(value.ToLower(),StringComparison.OrdinalIgnoreCase));
+                        break;
+                    default:
+                        query = query.Where(p => p.Name == value);
+                        break;
+                }
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"[GetAllProductByConditionAsync] - {ex.Message}");
+                return Enumerable.Empty<ProductDto>();
+            }
         }
 
-        public Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(Expression<Func<ProductDto, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

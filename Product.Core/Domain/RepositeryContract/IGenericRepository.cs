@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -38,7 +39,7 @@ namespace Product.Core.Domain.RepositeryContract
             /// </summary>
             /// <param name="filter">filter</param>
             /// <returns>return Generic class object</returns>
-            Task<T> GetAsync(Expression<Func<T, bool>> filter);
+            Task<T> GetAsync(Expression<Func<T, bool>> filter, string include = null);
 
             /// <summary>
             /// Get all items from expression and include data from the Dbcontext.
@@ -58,7 +59,8 @@ namespace Product.Core.Domain.RepositeryContract
             /// </summary>
             /// <param name="filter">filter</param>
             /// <returns>return Generic class object</returns>
-            Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter);
+            Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter, string include = null);
+            //Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         }
     
 }
