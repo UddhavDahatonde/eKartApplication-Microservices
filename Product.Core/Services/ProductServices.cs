@@ -305,6 +305,5 @@ namespace Product.Core.Services
                 return Enumerable.Empty<ProductDto>();
             }
         }
-
     }
 }
