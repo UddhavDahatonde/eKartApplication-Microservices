@@ -96,7 +96,6 @@ namespace Product.Infrastructure.Repositery
         }
         public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter,string include = null)
         {
-
             T entity = GetSingle(filter, include);
             return entity;
         }
