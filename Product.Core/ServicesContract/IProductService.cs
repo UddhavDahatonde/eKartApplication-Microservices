@@ -16,6 +16,6 @@ namespace Product.Core.ServicesContract
         Task<ProductDto> UpdateProductAsync(ProductDto? productDto);
         Task<IEnumerable<ProductDto>> GetAllProductAsync();
         Task<ProductDto> GetProductByIdAsync(int? Id);
-        Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(Expression<Func<ProductDto, bool>> filter);
+        Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(string?condition,string? value);
     }
 }
