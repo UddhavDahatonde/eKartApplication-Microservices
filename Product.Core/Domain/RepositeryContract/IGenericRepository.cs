@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Product.Core.Domain.RepositeryContract
 {
-     /// <summary>
+        /// <summary>
         /// Generic repository to Add, Update, Delete, Read fuctionality.
         /// </summary>
         public interface IGenericRepository<T> where T : class
