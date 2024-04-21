@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dto;
-using Product.Core.Services;
 using Product.Core.ServicesContract;
 
 namespace Product.Api.Controllers
@@ -51,7 +48,7 @@ namespace Product.Api.Controllers
             }
             return _responseDto;
         }
-        [HttpGet("GetById")]
+        [HttpGet("GetById/{id}")]
         public async Task<ResponseDto> GetById(int? Id)
         {
             try
@@ -66,13 +63,13 @@ namespace Product.Api.Controllers
             }
             return _responseDto;
         }
-        [HttpPost("AddPorduct")]
+        [HttpPost("AddProduct")]
         public async Task<ResponseDto>Post(ProductDto? productDto)
         {
             try
             {
                 _responseDto.Result =await _productServices.AddProductAsync(productDto);
-                _logger.LogInformation("AddPorduct- Called successfully From Controller");
+                _logger.LogInformation("AddProduct- Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -81,13 +78,13 @@ namespace Product.Api.Controllers
             }
             return _responseDto;
         }
-        [HttpPut("UpdatePorduct")]
+        [HttpPut("UpdateProduct")]
         public async Task<ResponseDto> Put(ProductDto? productDto)
         {
             try
             {
                 _responseDto.Result = await _productServices.UpdateProductAsync(productDto);
-                _logger.LogInformation("UpdatePorduct - Called successfully From Controller");
+                _logger.LogInformation("UpdateProduct - Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -97,7 +94,7 @@ namespace Product.Api.Controllers
             return _responseDto;
         }
 
-        [HttpDelete("DeletePorduct")]
+        [HttpDelete("DeleteProduct")]
         public async Task<ResponseDto> Delete(int? Id)
         {
             try

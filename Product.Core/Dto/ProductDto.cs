@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Product.Core.Dto
+﻿namespace Product.Core.Dto
 {
     public class ProductDto
     {
@@ -13,6 +7,8 @@ namespace Product.Core.Dto
         public string? Description { get; set; }
         public decimal? Price { get; set; }
         public int? QuantityAvailable { get; set; }
+        public bool isInStock { get; set; } = true;
+        public DateTime? CreatedDate { get; set; }  
         public int? CategoryId { get; set; }
         public CategoryDto? Category { get; set; }
         public int? Discount { get; set; }

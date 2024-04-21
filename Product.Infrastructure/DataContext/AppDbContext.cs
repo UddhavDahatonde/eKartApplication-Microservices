@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Product.Infrastructure.DataContext
 {
@@ -71,6 +66,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 50,
                             CategoryId = 1, // Assuming category ID for Electronics
                             Discount = 10,
+                            isInStock= true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Laptop",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -84,6 +80,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 100,
                             CategoryId = 1, // Assuming category ID for Electronics
                             Discount = 0,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Smartphone",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -97,6 +94,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 200,
                             CategoryId = 2, // Assuming category ID for Footwear
                             Discount = 20,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Shoes",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -121,6 +119,7 @@ namespace Product.Infrastructure.DataContext
                             Description = "Casual t-shirt made from soft cotton fabric",
                             Price = 19.99m,
                             QuantityAvailable = 300,
+                            isInStock = false,
                             CategoryId = 3, // Assuming category ID for Apparel
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=T-Shirt",
@@ -133,6 +132,7 @@ namespace Product.Infrastructure.DataContext
                             Name = "Desk Lamp",
                             Description = "Modern desk lamp with adjustable brightness",
                             Price = 39.99m,
+                            isInStock = true,
                             QuantityAvailable = 50,
                             CategoryId = 4, // Assuming category ID for Home & Office
                             Discount = 0,
@@ -147,6 +147,7 @@ namespace Product.Infrastructure.DataContext
                             Description = "Durable backpack with multiple compartments",
                             Price = 49.99m,
                             QuantityAvailable = 100,
+                            isInStock = false,
                             CategoryId = 5, // Assuming category ID for Bags & Luggage
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Backpack",
@@ -162,6 +163,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 30,
                             CategoryId = 6, // Assuming category ID for Appliances
                             Discount = 5,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Coffee+Maker",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -188,6 +190,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 80,
                             CategoryId = 1, // Assuming category ID for Electronics
                             Discount = 10,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Gaming+Mouse",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -201,6 +204,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 120,
                             CategoryId = 2, // Assuming category ID for Footwear
                             Discount = 0,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Shorts",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -214,6 +218,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 40,
                             CategoryId = 1, // Assuming category ID for Electronics
                             Discount = 0,
+                            isInStock = false,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Hard+Drive",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -240,6 +245,7 @@ namespace Product.Infrastructure.DataContext
                              QuantityAvailable = 200,
                              CategoryId = 8, // Assuming category ID for Health & Beauty
                              Discount = 0,
+                             isInStock = true,
                              ImageUrl = "https://via.placeholder.com/600x500.png?text=Sunscreen",
                              InsertedDate = DateTime.Now,
                              UpdatedDate = DateTime.Now
