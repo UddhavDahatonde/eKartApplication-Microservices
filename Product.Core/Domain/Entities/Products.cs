@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Product.Core.Domain.Entities
 {
@@ -20,6 +13,7 @@ namespace Product.Core.Domain.Entities
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
         public int? Discount { get; set; }
+        public bool isInStock { get; set; } = true;
         public string? ImageUrl { get; set; }
         public DateTime? InsertedDate { get; set; }
         public DateTime? UpdatedDate { get; set; } = DateTime.Now;

@@ -4,7 +4,6 @@ using Product.Core.Domain.RepositeryContract;
 using Product.Core.Dto;
 using Product.Core.Helper;
 using Product.Core.ServicesContract;
-using System.ComponentModel.DataAnnotations;
 
 namespace Product.Core.Services
 {
@@ -43,7 +42,7 @@ namespace Product.Core.Services
                     Description = productDto.Description,
                     Discount = productDto.Discount,
                     CategoryId = productDto.CategoryId,
-                    ImageUrl = productDto.ImageUrl,
+                    ImageUrl = $"https://via.placeholder.com/600x500.png?text={productDto.Name}",
                     Price = productDto.Price,
                     QuantityAvailable = productDto.QuantityAvailable,
                 };
@@ -150,9 +149,10 @@ namespace Product.Core.Services
                     CategoryId = product.CategoryId,
                     Discount = product.Discount,
                     ImageUrl = product.ImageUrl,
+                    CreatedDate=product.InsertedDate,
                     QuantityAvailable = product.QuantityAvailable,
                     Price = product.Price,
-                    PriceAfterDiscount = product.Price - (product.Price * product.Discount)
+                    PriceAfterDiscount = CalculatePriceAfterDiscount(product.Price, product.Discount)
                 };
 
                 if (product.Category != null)
@@ -173,7 +173,12 @@ namespace Product.Core.Services
             }
         }
 
-
+        public  decimal? CalculatePriceAfterDiscount(decimal? price, decimal?discount)
+        {
+            if(price!=null&&discount>0) 
+            return price * (1 - (discount / 100));
+            else return null;
+        }
         /// <inheritdoc/>
         public async Task<IEnumerable<ProductDto>> GetAllProductAsync()
         {
@@ -194,10 +199,11 @@ namespace Product.Core.Services
                             Description = product.Description,
                             CategoryId = product.CategoryId,
                             Discount = product.Discount,
+                            CreatedDate = product.InsertedDate,
                             ImageUrl = product.ImageUrl,
                             Price = product.Price,
                             QuantityAvailable = product.QuantityAvailable,
-                            PriceAfterDiscount = product.Price - (product.Price * product.Discount)
+                            PriceAfterDiscount = product.Price * (1 - (product.Discount / 100))
                         };
 
                         if (product.Category != null)

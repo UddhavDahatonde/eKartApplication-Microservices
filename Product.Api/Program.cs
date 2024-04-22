@@ -28,6 +28,15 @@ namespace Product.Api
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
             builder.Services.AddScoped(typeof(IProductService), typeof(ProductServices));
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("SpecificOrigins", x =>
+                {
+                    x.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -38,7 +47,7 @@ namespace Product.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors();
             app.UseAuthorization();
 
 
