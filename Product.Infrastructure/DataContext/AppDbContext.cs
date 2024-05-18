@@ -24,38 +24,6 @@ namespace Product.Infrastructure.DataContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-
-            modelBuilder.Entity<Products>(entity =>
-            {
-                // Set the primary key
-                entity.HasKey(p => p.ProductId);
-                entity.Property(p => p.Name).HasMaxLength(100)
-                .HasColumnName("ProductName");
-                entity.Property(p => p.Name).IsRequired();
-                entity.Property(p => p.Price).IsRequired();
-                entity.Property(p => p.Price).HasPrecision(precision: 10, scale: 2);
-                entity.Property(p => p.QuantityAvailable).IsRequired();
-                entity.Property(p => p.QuantityAvailable)
-                      .IsRequired()
-                      .HasDefaultValue(0)
-                      .HasColumnName("QuantityAvailable")
-                      .HasColumnType("int");
-                entity.Property(p => p.Description)
-                .HasMaxLength(2000);
-                entity.Property(p => p.ImageUrl).HasMaxLength(500);
-                entity.HasOne(p => p.Category)
-                                  .WithMany()
-                                  .HasForeignKey(p => p.CategoryId)
-                                  .IsRequired();
-            });
-            modelBuilder.Entity<Category>(x =>
-            {
-                x.HasKey(x => x.CategoryId);
-                x.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-            });
             modelBuilder.Entity<Products>().HasData(
                         new Products
                         {
@@ -66,7 +34,7 @@ namespace Product.Infrastructure.DataContext
                             QuantityAvailable = 50,
                             CategoryId = 1, // Assuming category ID for Electronics
                             Discount = 10,
-                            isInStock= true,
+                            isInStock = true,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Laptop",
                             InsertedDate = DateTime.Now,
                             UpdatedDate = DateTime.Now
@@ -321,7 +289,7 @@ namespace Product.Infrastructure.DataContext
                                {
                                    CategoryId = 14,
                                    Name = "Garden & Outdoor"
-                               }) ;
+                               });
 
         }
     }

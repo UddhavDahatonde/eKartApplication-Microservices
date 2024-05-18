@@ -1,5 +1,8 @@
 
+using Contracts;
+using LoggerService;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using Product.Core.Domain.RepositeryContract;
 using Product.Core.Services;
 using Product.Core.ServicesContract;
@@ -10,14 +13,14 @@ namespace Product.Api
 {
     public class Program
     {
+        private static readonly NLog.ILogger logger = LogManager.GetCurrentClassLogger();
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
-
+            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             builder.Services.AddControllers();
-            builder.Services.AddLogging();
+            //builder.Services.AddLogging();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -27,15 +30,20 @@ namespace Product.Api
             });
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
+            builder.Services.AddScoped(typeof(ICategoryRepositery), typeof(CategoryRepositery));
             builder.Services.AddScoped(typeof(IProductService), typeof(ProductServices));
+            builder.Services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+            builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("SpecificOrigins", x =>
-                {
-                    x.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-                });
+                options.AddPolicy("AllowOrigin",
+               builder =>
+               {
+                   builder.WithOrigins("http://localhost:4200")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+               });
             });
             var app = builder.Build();
 
@@ -47,7 +55,7 @@ namespace Product.Api
             }
 
             app.UseHttpsRedirection();
-            app.UseCors();
+            app.UseCors("AllowOrigin");
             app.UseAuthorization();
 
 

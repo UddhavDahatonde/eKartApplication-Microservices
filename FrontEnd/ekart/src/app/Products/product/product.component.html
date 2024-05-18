@@ -60,7 +60,7 @@
   </div>
 </div>
 <!-- Add Section-->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" #addModal tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="min-width: 700px;">
     <div class="modal-content">
       <h1 class="modal-title titleh1" id="addModalLabel">Add Product</h1>
@@ -72,9 +72,11 @@
               <label class="form-lable lableAdd" for="name">Name:</label>
             </div>
             <div class="col-6">
-              <input type="text"  class="form-control-lg" id="name" formControlName="name" placeholder="Enter name">
+              <input type="text" class="form-control-lg" id="name" formControlName="name" placeholder="Enter name"
+                required>
               <div *ngIf="addProduct.get('name')?.invalid && addProduct.get('name')?.touched">
-                <small class="text-danger" *ngIf="addProduct.get('name')?.errors?.['required']">Name is required.</small>
+                <small class="text-danger" *ngIf="addProduct.get('name')?.errors?.['required']">Name is
+                  required.</small>
               </div>
             </div>
           </div>
@@ -83,9 +85,11 @@
               <label class="form-lable lableAdd" for="price">Price:</label>
             </div>
             <div class="col-6">
-              <input type="number" placeholder="Enter price" class="form-control-lg" id="price" formControlName="price" min="1">
+              <input type="number" placeholder="Enter price" class="form-control-lg" id="price" formControlName="price"
+                min="1">
               <div *ngIf="addProduct.get('price')?.invalid && addProduct.get('price')?.touched">
-                <small class="text-danger" *ngIf="addProduct.get('price')?.errors?.['required']">Price is required.</small>
+                <small class="text-danger" *ngIf="addProduct.get('price')?.errors?.['required']">Price is
+                  required.</small>
               </div>
             </div>
           </div>
@@ -95,29 +99,22 @@
               <label class="lableAdd" for="description">Description:</label>
             </div>
             <div class="col-6">
-              <textarea type="text" rows="2" placeholder="Write description" class="textarea-lg" id="description" formControlName="description"></textarea>
-            </div>
-          </div>
-
-          <div class="row mt-1">
-            <div class="col-3">
-              <label class="form-lable lableAdd" for="isInStock">Is In Stock:</label>
-            </div>
-            <div class="col-6">
-              <input type="number" class="form-control-lg" id="isInStock" formControlName="isInStock" placeholder="is in stock" min="1">
-              <div *ngIf="addProduct.get('isInStock')?.invalid && addProduct.get('isInStock')?.touched">
-                <small class="text-danger" *ngIf="addProduct.get('isInStock')?.errors?.['required']">isInStock is required.</small>
-              </div>
+              <textarea type="text" rows="2" placeholder="Write description" class="textarea-lg" id="description"
+                formControlName="description"></textarea>
             </div>
           </div>
           <div class="row mt-1">
             <div class="col-3">
-              <label class="form-lable lableAdd" for="categoryId">Category Id:</label>
+              <label class="lableAdd" for="category">Category</label>
             </div>
             <div class="col-6">
-              <input type="number" placeholder="Enter category id"  class="form-control-lg" id="categoryId" formControlName="categoryId" min="1" >
+              <select class="textarea-lg" id="category" formControlName="categoryId" >
+                <option value="" disabled selected>Please select category</option>
+                <!-- Use *ngFor to iterate over categories and bind them to options -->
+                <option *ngFor="let category of categories" [value]="category.categoryId">{{ category.name }}</option>
+              </select>
               <div *ngIf="addProduct.get('categoryId')?.invalid && addProduct.get('categoryId')?.touched">
-                <small class="text-danger" *ngIf="addProduct.get('categoryId')?.errors?.['required']">categoryId is required.</small>
+                <small class="text-danger" *ngIf="addProduct.get('categoryId')?.errors?.['required']">Category is required.</small>
               </div>
             </div>
           </div>
@@ -126,18 +123,33 @@
               <label class="form-lable lableAdd" for="quantityAvailable">Quantity:</label>
             </div>
             <div class="col-6">
-              <input type="number"  class="form-control-lg" placeholder="Enter quantity"  id="quantityAvailable" formControlName="quantityAvailable" min="1">
+              <input type="number" class="form-control-lg" placeholder="Enter quantity" id="quantityAvailable"
+                formControlName="quantityAvailable" min="1">
               <div *ngIf="addProduct.get('quantityAvailable')?.invalid && addProduct.get('quantityAvailable')?.touched">
-                <small class="text-danger" *ngIf="addProduct.get('quantityAvailable')?.errors?.['required']">isInStock is required.</small>
+                <small class="text-danger" *ngIf="addProduct.get('quantityAvailable')?.errors?.['required']">isInStock
+                  is required.</small>
               </div>
             </div>
           </div>
           <div class="row mt-1">
             <div class="col-3">
-              <label  class="form-lable lableAdd" for="discount">Discount:</label>
+              <label class="form-lable lableAdd" for="discount">Discount:</label>
             </div>
             <div class="col-6">
-              <input type="number" placeholder="Enter discount"  class="form-control-lg" id="discount" formControlName="discount" min="1">
+              <input type="number" placeholder="Enter discount" class="form-control-lg" id="discount"
+                formControlName="discount" min="1">
+            </div>
+          </div>
+          <div class="row mt-1">
+            <div class="col-3">
+              <label class="form-lable lableAdd" for="isInStock">In Stock:</label>
+            </div>
+            <div class="col-6">
+              <input class="form-check-input checkbox" id="isInStock" formControlName="isInStock" type="checkbox" checked="true">
+              <div *ngIf="addProduct.get('isInStock')?.invalid && addProduct.get('isInStock')?.touched">
+                <small class="text-danger" *ngIf="addProduct.get('isInStock')?.errors?.['required']">isInStock is
+                  required.</small>
+              </div>
             </div>
           </div>
           <div class="d-flex justify-content-end">
@@ -210,7 +222,7 @@
 </div>
 
 <!-- Delete Section-->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" #deleteModal tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="min-width: 650px;">
     <div class="modal-content">
       <h2 class="modal-title mx-2" style="color: rgb(189, 91, 91);" id="deleteModalLabel">Are you sure to delete this
@@ -243,8 +255,8 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger btn-lg">Delete</button>
+  <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-lg" (click)="deleteProduct()">Delete</button>
         <button type="button" class="btn btn-secondary  btn-lg" data-bs-dismiss="modal">Close</button>
       </div>
     </div>

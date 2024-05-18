@@ -15,4 +15,15 @@ export class ProductService {
   public getProductsById(productId:number): Observable<Product> {
     return this._apiService.get(`${this.apiEndpoints.productUrl}/api/Product/GetById/${productId}`);
   }
+  public addProduct(productobj:Product):Observable<Product>{
+    return this._apiService.post(`${this.apiEndpoints.productUrl}/api/Product/AddProduct`,productobj)
+  }
+  public getCategories(){
+return this._apiService.get(`${this.apiEndpoints.productUrl}/api/Product/GetAll/Category`);
+  }
+
+  public deleteProduct(productId:number):Observable<Product>{
+      return this._apiService.delete(`${this.apiEndpoints.productUrl}/api/Product/DeleteProduct/${productId}`);
+    
+  }
 }

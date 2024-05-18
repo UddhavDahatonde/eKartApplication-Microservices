@@ -1,12 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Product.Core.Domain.RepositeryContract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Product.Infrastructure.Repositery
 {
@@ -43,7 +37,7 @@ namespace Product.Infrastructure.Repositery
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter, string include = null)
         {
             // Assuming you want to include related entities based on the string "category"
-            var query = GetQueryable(filter,include);
+            var query = GetQueryable(filter, include);
             return await query.FirstOrDefaultAsync();
         }
 
@@ -52,6 +46,7 @@ namespace Product.Infrastructure.Repositery
             _Context.Set<T>().Update(entity);
             return entity;
         }
+
 
         public Task<int> CompleteAsync()
         {
@@ -94,7 +89,7 @@ namespace Product.Infrastructure.Repositery
 
             return query;
         }
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter,string include = null)
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> filter, string include = null)
         {
 
             T entity = GetSingle(filter, include);
@@ -113,7 +108,7 @@ namespace Product.Infrastructure.Repositery
         //{
         //    return GetQueryable(filter, include).FirstOrDefault();
         //}
-        private T GetSingle(Expression<Func<T, bool>>? filter = null,string include = null)
+        private T GetSingle(Expression<Func<T, bool>>? filter = null, string include = null)
         {
             return GetQueryable(filter, include).FirstOrDefault();
         }

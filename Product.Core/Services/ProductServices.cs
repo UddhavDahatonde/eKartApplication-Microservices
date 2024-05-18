@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Contracts;
 using Product.Core.Domain.Entities;
 using Product.Core.Domain.RepositeryContract;
 using Product.Core.Dto;
@@ -10,14 +10,14 @@ namespace Product.Core.Services
     public class ProductServices : IProductService
     {
         private readonly IProductRepository _productRepository;
-        private ILogger<ProductServices> _logger;
+        private readonly ILoggerManager _logger;
 
         /// <summary>
         /// Initializes a new instance 
         /// </summary>
-        /// <param name="IProductRepository">dfhgdj</param>
-        /// <param name="ILogger<ProductService>">gfhk</param>
-        public ProductServices(IProductRepository productRepository, ILogger<ProductServices> logger)
+        /// <param name="IProductRepository"></param>
+        /// <param name="ILogger<ProductService>"></param>
+        public ProductServices(IProductRepository productRepository, ILoggerManager logger)
         {
             _productRepository = productRepository;
             _logger = logger;
@@ -26,7 +26,7 @@ namespace Product.Core.Services
         /// <inheritdoc/>
         public async Task<ProductDto> AddProductAsync(ProductDto? productDto)
         {
-            if (productDto == null)
+            if (productDto == null || productDto.CategoryId == 0)
             {
                 throw new ArgumentNullException(nameof(productDto));
             }
@@ -47,7 +47,7 @@ namespace Product.Core.Services
                     QuantityAvailable = productDto.QuantityAvailable,
                 };
 
-                if (productDto.Category != null && productDto.Category.CategoryId!=0&&productDto.Category.Name!="")
+                if (productDto.Category != null && productDto.Category.CategoryId != 0 && productDto.Category.Name != "")
                 {
                     product.Category = new Category()
                     {
@@ -66,7 +66,7 @@ namespace Product.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[AddProductAsync] - {ex.Message}");
+                _logger.LogError($"[AddProductAsync] In ProductServices - {ex.Message}");
             }
 
             return new ProductDto();
@@ -117,7 +117,7 @@ namespace Product.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[UpdateProductAsync] - {ex.Message}");
+                _logger.LogError($"[UpdateProductAsync] In ProductServices - {ex.Message}");
             }
 
             return new ProductDto();
@@ -149,7 +149,7 @@ namespace Product.Core.Services
                     CategoryId = product.CategoryId,
                     Discount = product.Discount,
                     ImageUrl = product.ImageUrl,
-                    CreatedDate=product.InsertedDate,
+                    CreatedDate = product.InsertedDate,
                     QuantityAvailable = product.QuantityAvailable,
                     Price = product.Price,
                     PriceAfterDiscount = CalculatePriceAfterDiscount(product.Price, product.Discount)
@@ -168,15 +168,15 @@ namespace Product.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[GetProductByIdAsync] - {ex.Message}");
+                _logger.LogError($"[GetProductByIdAsync] In ProductServices - {ex.Message}");
                 return null;
             }
         }
 
-        public  decimal? CalculatePriceAfterDiscount(decimal? price, decimal?discount)
+        public decimal? CalculatePriceAfterDiscount(decimal? price, decimal? discount)
         {
-            if(price!=null&&discount>0) 
-            return price * (1 - (discount / 100));
+            if (price != null && discount > 0)
+                return price * (1 - (discount / 100));
             else return null;
         }
         /// <inheritdoc/>
@@ -203,7 +203,7 @@ namespace Product.Core.Services
                             ImageUrl = product.ImageUrl,
                             Price = product.Price,
                             QuantityAvailable = product.QuantityAvailable,
-                            PriceAfterDiscount = product.Price * (1 - (product.Discount / 100))
+                            PriceAfterDiscount = CalculatePriceAfterDiscount(product.Price, product.Discount),
                         };
 
                         if (product.Category != null)
@@ -217,13 +217,13 @@ namespace Product.Core.Services
 
                         productList.Add(productDto);
                     }
-
                     return productList;
                 }
+
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[GetAllProductAsync] - {ex.Message}");
+                _logger.LogError($"[GetAllProductAsync] In ProductServices - {ex.Message}");
             }
 
             return Enumerable.Empty<ProductDto>();
@@ -273,7 +273,7 @@ namespace Product.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"[DeleteProductAsync] - {ex.Message}");
+                _logger.LogError($"[DeleteProductAsync] In ProductServices - {ex.Message}");
                 throw;
             }
         }
@@ -297,7 +297,7 @@ namespace Product.Core.Services
                 switch (condition.ToLower())
                 {
                     case "name":
-                        query = query.Where(p => p.Name.ToLower().Contains(value.ToLower(),StringComparison.OrdinalIgnoreCase));
+                        query = query.Where(p => p.Name.ToLower().Contains(value.ToLower(), StringComparison.OrdinalIgnoreCase));
                         break;
                     default:
                         query = query.Where(p => p.Name == value);
@@ -307,7 +307,7 @@ namespace Product.Core.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"[GetAllProductByConditionAsync] - {ex.Message}");
+                _logger.LogError($"[GetAllProductByConditionAsync] In ProductServices - {ex.Message}");
                 return Enumerable.Empty<ProductDto>();
             }
         }

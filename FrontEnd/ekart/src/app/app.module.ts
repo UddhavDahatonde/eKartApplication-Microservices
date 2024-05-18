@@ -7,11 +7,13 @@ import { AppComponent } from './app.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ProductComponent } from './Products/product/product.component';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
     ProductComponent,
-    DateOnlyPipe
+    DateOnlyPipe,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
