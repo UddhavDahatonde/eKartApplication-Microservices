@@ -1,11 +1,4 @@
-﻿using Product.Core.Domain.Entities;
-using Product.Core.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Product.Core.Dto;
 
 namespace Product.Core.ServicesContract
 {
@@ -16,6 +9,6 @@ namespace Product.Core.ServicesContract
         Task<ProductDto> UpdateProductAsync(ProductDto? productDto);
         Task<IEnumerable<ProductDto>> GetAllProductAsync();
         Task<ProductDto> GetProductByIdAsync(int? Id);
-        Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(string?condition,string? value);
+        Task<IEnumerable<ProductDto>> GetAllProductByConditionAsync(string? condition, string? value);
     }
 }

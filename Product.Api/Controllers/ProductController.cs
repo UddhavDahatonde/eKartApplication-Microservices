@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contracts;
+using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dto;
 using Product.Core.ServicesContract;
 
@@ -9,14 +10,16 @@ namespace Product.Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productServices;
-        private ILogger<ProductController> _logger;
-    
+        private readonly ICategoryService _categoryServices;
+        private readonly ILoggerManager _logger;
+
         private ResponseDto _responseDto;
-        public ProductController(IProductService productServices, ILogger<ProductController> logger)
+        public ProductController(IProductService productServices, ILoggerManager logger, ICategoryService categoryServices)
         {
             _productServices = productServices;
             _logger = logger;
             _responseDto = new ResponseDto();
+            _categoryServices = categoryServices;
         }
         [HttpGet("GetAll/Product")]
         public async Task<ResponseDto> GetAll()
@@ -24,22 +27,24 @@ namespace Product.Api.Controllers
             try
             {
                 _responseDto.Result = await _productServices.GetAllProductAsync();
-                _logger.LogInformation("GetAll - Called successfully From Controller");
+                _logger.LogInfo("GetAll - Called successfully From Controller");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                _responseDto.Message= ex.Message;
+                _responseDto.Message = ex.Message;
                 _responseDto.Status = false;
             }
             return _responseDto;
         }
+
+
         [HttpGet("GetAllProductByConditionAsync")]
         public async Task<ResponseDto> GetAllProductByConditionAsync([FromQuery] string? condition, [FromQuery] string? value)
         {
             try
             {
-                _responseDto.Result = await _productServices.GetAllProductByConditionAsync(condition,value);
-                _logger.LogInformation("GetAllProductByConditionAsync - Called successfully From Controller");
+                _responseDto.Result = await _productServices.GetAllProductByConditionAsync(condition, value);
+                _logger.LogInfo("GetAllProductByConditionAsync - Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -54,7 +59,7 @@ namespace Product.Api.Controllers
             try
             {
                 _responseDto.Result = await _productServices.GetProductByIdAsync(Id);
-                _logger.LogInformation("GetById - Called successfully From Controller");
+                _logger.LogInfo("GetById - Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -64,12 +69,12 @@ namespace Product.Api.Controllers
             return _responseDto;
         }
         [HttpPost("AddProduct")]
-        public async Task<ResponseDto>Post(ProductDto? productDto)
+        public async Task<ResponseDto> Post(ProductDto? productDto)
         {
             try
             {
-                _responseDto.Result =await _productServices.AddProductAsync(productDto);
-                _logger.LogInformation("AddProduct- Called successfully From Controller");
+                _responseDto.Result = await _productServices.AddProductAsync(productDto);
+                _logger.LogInfo("AddProduct- Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -84,7 +89,7 @@ namespace Product.Api.Controllers
             try
             {
                 _responseDto.Result = await _productServices.UpdateProductAsync(productDto);
-                _logger.LogInformation("UpdateProduct - Called successfully From Controller");
+                _logger.LogInfo("UpdateProduct - Called successfully From Controller");
             }
             catch (Exception ex)
             {
@@ -94,13 +99,28 @@ namespace Product.Api.Controllers
             return _responseDto;
         }
 
-        [HttpDelete("DeleteProduct")]
+        [HttpDelete("DeleteProduct/{Id}")]
         public async Task<ResponseDto> Delete(int? Id)
         {
             try
             {
                 _responseDto.Result = await _productServices.DeleteProductAsync(Id);
-                _logger.LogInformation("Delete-Called successfully From Controller");
+                _logger.LogInfo("Delete-Called successfully From Controller");
+            }
+            catch (Exception ex)
+            {
+                _responseDto.Message = ex.Message;
+                _responseDto.Status = false;
+            }
+            return _responseDto;
+        }
+        [HttpGet("GetAll/Category")]
+        public async Task<ResponseDto> GetAllCategory()
+        {
+            try
+            {
+                _responseDto.Result = await _categoryServices.GetAllCategoryAsync();
+                _logger.LogInfo("GetAllCategory - Called successfully From Controller");
             }
             catch (Exception ex)
             {

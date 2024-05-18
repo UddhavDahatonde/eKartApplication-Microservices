@@ -8,7 +8,7 @@
         public decimal? Price { get; set; }
         public int? QuantityAvailable { get; set; }
         public bool isInStock { get; set; } = true;
-        public DateTime? CreatedDate { get; set; }  
+        public DateTime? CreatedDate { get; set; }
         public int? CategoryId { get; set; }
         public CategoryDto? Category { get; set; }
         public int? Discount { get; set; }

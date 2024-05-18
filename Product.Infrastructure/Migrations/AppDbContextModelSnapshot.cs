@@ -121,7 +121,6 @@ namespace Product.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int?>("CategoryId")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -140,21 +139,14 @@ namespace Product.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("ProductName");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<decimal?>("Price")
-                        .IsRequired()
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("QuantityAvailable")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0)
-                        .HasColumnName("QuantityAvailable");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -176,11 +168,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Powerful laptop with latest features",
                             Discount = 10,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Laptop",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2405),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2360),
                             Name = "Laptop",
                             Price = 999.99m,
                             QuantityAvailable = 50,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2405),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2361),
                             isInStock = true
                         },
                         new
@@ -190,11 +182,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "High-performance smartphone with advanced camera",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Smartphone",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2410),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2365),
                             Name = "Smartphone",
                             Price = 799.99m,
                             QuantityAvailable = 100,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2410),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2365),
                             isInStock = true
                         },
                         new
@@ -204,11 +196,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Comfortable running shoes with breathable material",
                             Discount = 20,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Shoes",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2414),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2369),
                             Name = "Running Shoes",
                             Price = 79.99m,
                             QuantityAvailable = 200,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2414),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2369),
                             isInStock = true
                         },
                         new
@@ -218,11 +210,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "High-quality wireless headphones with noise cancellation",
                             Discount = 15,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Headphones",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2419),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2373),
                             Name = "Wireless Headphones",
                             Price = 129.99m,
                             QuantityAvailable = 75,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2419),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2374),
                             isInStock = true
                         },
                         new
@@ -232,11 +224,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Casual t-shirt made from soft cotton fabric",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=T-Shirt",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2422),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2377),
                             Name = "T-Shirt",
                             Price = 19.99m,
                             QuantityAvailable = 300,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2423),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2377),
                             isInStock = false
                         },
                         new
@@ -246,11 +238,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Modern desk lamp with adjustable brightness",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Lamp",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2426),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2380),
                             Name = "Desk Lamp",
                             Price = 39.99m,
                             QuantityAvailable = 50,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2427),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2381),
                             isInStock = true
                         },
                         new
@@ -260,11 +252,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Durable backpack with multiple compartments",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Backpack",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2430),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2384),
                             Name = "Backpack",
                             Price = 49.99m,
                             QuantityAvailable = 100,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2430),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2384),
                             isInStock = false
                         },
                         new
@@ -274,11 +266,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Automatic coffee maker with programmable features",
                             Discount = 5,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Coffee+Maker",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2433),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2387),
                             Name = "Coffee Maker",
                             Price = 89.99m,
                             QuantityAvailable = 30,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2434),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2388),
                             isInStock = true
                         },
                         new
@@ -288,11 +280,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Classic leather wallet with multiple card slots",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Wallet",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2437),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2390),
                             Name = "Leather Wallet",
                             Price = 29.99m,
                             QuantityAvailable = 150,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2437),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2391),
                             isInStock = true
                         },
                         new
@@ -302,11 +294,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "High-performance gaming mouse with customizable buttons",
                             Discount = 10,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Gaming+Mouse",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2441),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2395),
                             Name = "Gaming Mouse",
                             Price = 59.99m,
                             QuantityAvailable = 80,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2442),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2395),
                             isInStock = true
                         },
                         new
@@ -316,11 +308,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Lightweight running shorts with moisture-wicking fabric",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Shorts",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2445),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2398),
                             Name = "Running Shorts",
                             Price = 34.99m,
                             QuantityAvailable = 120,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2445),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2398),
                             isInStock = true
                         },
                         new
@@ -330,11 +322,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Portable external hard drive with high-speed data transfer",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Hard+Drive",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2448),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2401),
                             Name = "External Hard Drive",
                             Price = 119.99m,
                             QuantityAvailable = 40,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2449),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2401),
                             isInStock = false
                         },
                         new
@@ -344,11 +336,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "Premium yoga mat with non-slip surface",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Yoga+Mat",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2452),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2408),
                             Name = "Yoga Mat",
                             Price = 29.99m,
                             QuantityAvailable = 90,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2452),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2409),
                             isInStock = true
                         },
                         new
@@ -358,11 +350,11 @@ namespace Product.Infrastructure.Migrations
                             Description = "High SPF sunscreen for protection against UV rays",
                             Discount = 0,
                             ImageUrl = "https://via.placeholder.com/600x500.png?text=Sunscreen",
-                            InsertedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2455),
+                            InsertedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2412),
                             Name = "Sunscreen",
                             Price = 14.99m,
                             QuantityAvailable = 200,
-                            UpdatedDate = new DateTime(2024, 4, 20, 13, 54, 26, 704, DateTimeKind.Local).AddTicks(2456),
+                            UpdatedDate = new DateTime(2024, 5, 13, 12, 21, 44, 204, DateTimeKind.Local).AddTicks(2413),
                             isInStock = true
                         });
                 });
@@ -370,12 +362,15 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Core.Domain.Entities.Products", b =>
                 {
                     b.HasOne("Product.Core.Domain.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Product.Core.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
